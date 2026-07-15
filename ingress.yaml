@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: billing-system-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false" # Set to true if using SSL/TLS
+spec:
+  ingressClassName: nginx        # Specifies the Ingress controller to use
+  rules:
+  - host: billing.local          # Replace with your actual domain name
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: billing-system-service # Must match your Service name
+            port:
+              number: 80         # Must match the port exposed by your Service

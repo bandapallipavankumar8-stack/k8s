@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-system-service
+  labels:
+    tier: backend
+spec:
+  type: ClusterIP                # Exposes the service on a cluster-internal IP
+  selector:
+    app: billing-worker        # Must match the template label in your deployment
+  ports:
+    - protocol: TCP
+      port: 80                 # The port the service exposes inside the cluster
+      targetPort: 80           # The port the container (nginx) is listening on

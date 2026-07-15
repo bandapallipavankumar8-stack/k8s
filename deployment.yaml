@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: billing-system-deployment
+  labels:
+    tier: backend
+spec:
+  replicas: 5                    # Tells K8s to always keep 5 identical Pods alive
+  selector:
+    matchLabels:
+      app: billing-worker        # The Deployment tracks Pods with this exact label
+  template:                      # <--- THIS IS THE POD TEMPLATE
+    metadata:
+      labels:
+        app: billing-worker      # This label must match the selector label above
+    spec:
+      containers:
+      - name: payment-processor
+        image: nginx:alpine
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
